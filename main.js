@@ -17,6 +17,7 @@ function getRow(first, second, char) {
     console.log(countChar(first, char) > countChar(second, char) ? firstRow.toString() : secondRow.toString());
 }
 
+
 // Вывод строки с максимальным количеством букв указанных в условии.
 getRow(firstRow, secondRow, 'а');
 
