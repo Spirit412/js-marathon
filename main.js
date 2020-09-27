@@ -24,10 +24,9 @@ const enemy = {
 
 $btn.addEventListener('click', function () {
     console.log('Kick');
-    const  kick = random(damage.normal)
-    changeHP(kick, character);
-    changeHP(kick, enemy);
-    console.log(kick);
+    //FIX Удар для обоих персонажей сделан отдельно рандомным.
+    changeHP(random(damage.normal), character);
+    changeHP(random(damage.normal), enemy);
 })
 
 function init() {
