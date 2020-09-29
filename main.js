@@ -5,7 +5,7 @@ const damage = {
     normal: [0, 10],
     midle: [5, 20],
     high: [15, 30],
-}
+};
 
 const character = {
     name: 'Picachu',
@@ -17,7 +17,7 @@ const character = {
     renderHP: renderHP,
     renderHPLife: renderHPLife,
     renderProgressHP: renderProgressHP,
-}
+};
 const enemy = {
     name: 'Charmander',
     defaultHP: 160,
@@ -28,7 +28,7 @@ const enemy = {
     renderHP: renderHP,
     renderHPLife: renderHPLife,
     renderProgressHP: renderProgressHP,
-}
+};
 
 // console.log(enemy.changeHP(random(damage.normal)));
 // console.log(random(damage.normal));
