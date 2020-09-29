@@ -2,70 +2,108 @@ const $btn = document.getElementById('btn-kick');
 
 //разный диапазон повреждения
 const damage = {
-    normal: [0 , 10],
-    midle:[5,20],
-    high:[15,30],
+    normal: [0, 10],
+    midle: [5, 20],
+    high: [15, 30],
 }
 
 const character = {
     name: 'Picachu',
-    defaultHP: 100,
-    damageHP: 100,
+    defaultHP: 160,
+    damageHP: 160,
     elHP: document.getElementById('health-character'),
     elProgressBar: document.getElementById('progressbar-character'),
+    changeHP: changeHP,
+    renderHP: renderHP,
+    renderHPLife: renderHPLife,
+    renderProgressHP: renderProgressHP,
 }
 const enemy = {
     name: 'Charmander',
-    defaultHP: 100,
-    damageHP: 100,
+    defaultHP: 160,
+    damageHP: 160,
     elHP: document.getElementById('health-enemy'),
     elProgressBar: document.getElementById('progressbar-enemy'),
+    changeHP: changeHP,
+    renderHP: renderHP,
+    renderHPLife: renderHPLife,
+    renderProgressHP: renderProgressHP,
 }
+
+// console.log(enemy.changeHP(random(damage.normal)));
+// console.log(random(damage.normal));
 
 $btn.addEventListener('click', function () {
     console.log('Kick');
     //FIX Удар для обоих персонажей сделан отдельно рандомным.
-    changeHP(random(damage.normal), character);
-    changeHP(random(damage.normal), enemy);
+    character.changeHP(random(damage.normal));
+    enemy.changeHP(random(damage.normal));
+    character.renderHPLife()
+    enemy.renderHPLife()
+    character.renderProgressHP()
+    enemy.renderProgressHP()
 })
 
+/**
+ * @function функция инициализации игры при стартк
+ */
 function init() {
     console.log('Start game!');
-    console.dir(damage);
     // }
-        //TODO кнопку через js. т.к. вероятно в дальнейшем по функционалу можно будет для разных файтингов делать разный набор кнопок
-        //     const _ = document.getElementById('control');
-        //     _.innerHTML = '<button class="button" id="btn-kick2">Fatality Kick!!!</button>\n' +
-        //             '            <button class="button" id="btn-kick">Thunder Jolt</button>';
-    renderHP(character);
-    renderHP(enemy);
+    //TODO кнопку через js. т.к. вероятно в дальнейшем по функционалу можно будет для разных файтингов делать разный набор кнопок
+    //     const _ = document.getElementById('control');
+    //     _.innerHTML = '<button class="button" id="btn-kick2">Fatality Kick!!!</button>\n' +
+    //             '            <button class="button" id="btn-kick">Thunder Jolt</button>';
+    character.renderHPLife();
+    enemy.renderHPLife();
+    character.renderProgressHP();
+    enemy.renderProgressHP();
+    character.changeHP;
+    enemy.changeHP;
 }
 
-function renderHP(person) {
-    renderHPLife(person);
-    renderProgressHP(person);
+function renderHP() {
+    this.renderHPLife;
+    this.renderProgressHP;
 }
 
-function renderHPLife(person) {
-    person.elHP.innerText = person.damageHP + ' / ' + person.defaultHP;
+function renderHPLife() {
+    this.elHP.innerText = this.damageHP + ' / ' + this.defaultHP;
 }
 
-function renderProgressHP(person) {
-    person.elProgressBar.style.width = person.damageHP + '%';
-}
-
-function changeHP(count, person) {
-    if (person.damageHP < count){
-        person.damageHP = 0;
-        alert(`${person.name} - Game over!`)
-        $btn.disable = true;
+/**
+ * @function renderProgressHP функция рендера прогрессбара жизней.
+ * Вызывается через методы объектов.
+ * @this {Object}
+ */
+function renderProgressHP() {
+    const progressHP = (this.damageHP / this.defaultHP) * 100;
+    if (progressHP < 25) {
+        this.elProgressBar.style.background = '#d20000'
+        this.elProgressBar.style.width = progressHP + '%'
     } else {
-    person.damageHP -= count;
+        this.elProgressBar.style.width = progressHP + '%'
     }
-    renderHP(person);
+}
+
+/**
+ * @param {number}  count число на которое уменьшается damageHP объекта
+ */
+function changeHP(count) {
+    if (this.damageHP < count) {
+        alert(`${this.name} - Game over!`);
+        $btn.disabled = true;
+        console.debug($btn.disabled)
+        this.damageHP = 0;
+    } else {
+        this.damageHP -= count;
+    }
 }
 
 
+/**
+ * @param {number[]} minmax принимает массив двух чисел диапазона в котором генерируется число
+ */
 function random(minmax) {
     // minmax[0] - min
     // minmax[1] - max
