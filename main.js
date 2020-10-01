@@ -1,9 +1,12 @@
-const $btn = document.getElementById('btn-kick');
+function $getElById(id){ 
+    return document.getElementById(id)
+}
+const $btn = $getElById('btn-kick');
 
 //разный диапазон повреждения
 const damage = {
     normal: [0, 10],
-    midle: [5, 20],
+    middle: [5, 20],
     high: [15, 30],
 };
 
@@ -11,8 +14,8 @@ const character = {
     name: 'Picachu',
     defaultHP: 160,
     damageHP: 160,
-    elHP: document.getElementById('health-character'),
-    elProgressBar: document.getElementById('progressbar-character'),
+    elHP: $getElById('health-character'),
+    elProgressBar: $getElById('progressbar-character'),
     changeHP: changeHP,
     renderHP: renderHP,
     renderHPLife: renderHPLife,
@@ -22,26 +25,24 @@ const enemy = {
     name: 'Charmander',
     defaultHP: 160,
     damageHP: 160,
-    elHP: document.getElementById('health-enemy'),
-    elProgressBar: document.getElementById('progressbar-enemy'),
+    elHP: $getElById('health-enemy'),
+    elProgressBar: $getElById('progressbar-enemy'),
     changeHP: changeHP,
     renderHP: renderHP,
     renderHPLife: renderHPLife,
     renderProgressHP: renderProgressHP,
 };
 
-// console.log(enemy.changeHP(random(damage.normal)));
-// console.log(random(damage.normal));
 
 $btn.addEventListener('click', function () {
     console.log('Kick');
     //FIX Удар для обоих персонажей сделан отдельно рандомным.
     character.changeHP(random(damage.normal));
     enemy.changeHP(random(damage.normal));
-    character.renderHPLife()
-    enemy.renderHPLife()
-    character.renderProgressHP()
-    enemy.renderProgressHP()
+    // character.renderHPLife()
+    // enemy.renderHPLife()
+    // character.renderProgressHP()
+    // enemy.renderProgressHP()
 })
 
 /**
@@ -49,11 +50,6 @@ $btn.addEventListener('click', function () {
  */
 function init() {
     console.log('Start game!');
-    // }
-    //TODO кнопку через js. т.к. вероятно в дальнейшем по функционалу можно будет для разных файтингов делать разный набор кнопок
-    //     const _ = document.getElementById('control');
-    //     _.innerHTML = '<button class="button" id="btn-kick2">Fatality Kick!!!</button>\n' +
-    //             '            <button class="button" id="btn-kick">Thunder Jolt</button>';
     character.renderHPLife();
     enemy.renderHPLife();
     character.renderProgressHP();
@@ -63,8 +59,8 @@ function init() {
 }
 
 function renderHP() {
-    this.renderHPLife;
-    this.renderProgressHP;
+    this.renderHPLife();
+    this.renderProgressHP();
 }
 
 function renderHPLife() {
@@ -90,14 +86,14 @@ function renderProgressHP() {
  * @param {number}  count число на которое уменьшается damageHP объекта
  */
 function changeHP(count) {
+    this.damageHP -= count;
     if (this.damageHP < count) {
         alert(`${this.name} - Game over!`);
         $btn.disabled = true;
         console.debug($btn.disabled)
         this.damageHP = 0;
-    } else {
-        this.damageHP -= count;
     }
+    this.renderHP();
 }
 
 
