@@ -51,6 +51,24 @@ body {
     margin: 30px auto;
 }
 
+#logBatle {
+    max-width: 1024px;
+    /* display: flex; */
+    justify-content: space-around;
+    margin: 30px auto;
+}
+
+.colortextFirstPerson {
+    color: red; /* Красный цвет выделения */
+}
+  
+  
+.colortextSecondPerson {
+      color: blue; /* синий цвет выделения */
+}
+
+
+
 .arrow {
     position: absolute;
     left: 0;
