@@ -1,10 +1,6 @@
 const $btn = $getElById('btn-kick');
-
-
-
-
-
-
+const $btn_bonus = $getElById('btn-bonus-kick');
+const KICK_START = 2;
 
 /**
  * @param {damage} разный диапазон повреждения
@@ -12,7 +8,7 @@ const $btn = $getElById('btn-kick');
 const damage = {
     normal: [0, 10],
     middle: [5, 20],
-    high: [15, 30],
+    high: [20, 50],
 };
 
 const character = {
@@ -48,22 +44,67 @@ function $getElById(id){
  */
 function randomKick(obj){
     const [...argKeyDam] = Object.keys(obj);
-    // return random([0, argKeyDam.length])
-    // console.log(argKeyDam.length);
     const kick = argKeyDam[random([0, argKeyDam.length])];
     return kick;
 }
 
-// console.log(damage[randomKick(damage)]);
+/**
+ * @function bonus_kick - замкнутая функция
+ */
+function bonus_kick(k){
+    let b = k;
+    
+    return function (n = 1) {
+        b -= n;
+        let kick = random(damage.high);
+        if (b <=0 ){
+            document.querySelector('#btn-bonus-kick').innerText = `Bonus kick! 0`;
+            $btn_bonus.disabled = true;
+        }
+        document.querySelector('#btn-bonus-kick').innerText = `Bonus kick! ${b} из ${KICK_START}`;
+        return kick;
+    }
+}
 
+
+function kick(){
+    let n = 0;
+    return function () {
+        let kick = random(damage[randomKick(damage)]);
+        n += 1;
+        document.querySelector('#btn-kick').innerText = `Thunder Jolt ${n}`;
+        console.log(`Количество нажатий на кнопку Thunder Jolt - ${n}`);
+        return kick;
+    }
+}
+
+
+const kick1 = kick();
+const kick2 = kick();
 
 $btn.addEventListener('click', function () {
-    let kick = random(damage[randomKick(damage)]);
-    character.changeHP(kick);
-    console.log(`Повреждение ${character.name} = - ${kick}, осталось ${character.damageHP}`);
-    kick = random(damage[randomKick(damage)]);
-    enemy.changeHP(kick);
-    console.log(`Повреждение ${enemy.name} = - ${kick}, осталось ${enemy.damageHP}`);
+    let a = kick1();
+    character.changeHP(a);
+    console.log(`Повреждение ${character.name} = -${a}, осталось ${character.damageHP}`);
+    let b = kick2();
+    enemy.changeHP(b);
+    console.log(`Повреждение ${enemy.name} = -${b}, осталось ${enemy.damageHP}`);
+})
+
+/**
+ * @param bonus_kick - число бонусных ударов 
+ */
+const kick_bonus1 = bonus_kick(KICK_START);
+const kick_bonus2 = bonus_kick(KICK_START);
+
+
+$btn_bonus.addEventListener('click', function () {
+    let a = kick_bonus1();
+    console.log(a)
+    character.changeHP(a);
+    
+    let b = kick_bonus2();
+    enemy.changeHP(b);
 })
 
 /**
@@ -77,6 +118,9 @@ function init() {
     enemy.renderProgressHP();
     character.changeHP;
     enemy.changeHP;
+    document.querySelector('#btn-kick').innerText = `Thunder Jolt 0`;
+    document.querySelector('#btn-bonus-kick').innerText = `Bonus kick! ${KICK_START} из ${KICK_START}`;
+
 }
 
 function renderHP() {
@@ -117,9 +161,6 @@ function changeHP(count) {
     $p.innerHTML = `${log}`;
 
     $logBattle.insertBefore($p, $logBattle.children[0]);
-
-
-    console.log(log);
 
     if (this.damageHP <= 0) {
         $btn.disabled = true;
