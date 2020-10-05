@@ -48,28 +48,14 @@ function randomKick(obj){
     return kick;
 }
 
-
+/**
+ * @function countKickUp функция-счетчик 
+ */
 function countKickUp(){
     let n = 0;
     return function () {
         n += 1;
         return n;
-    }
-}
-
-/**
- * @function countKickDown - функция подсчёта оставшихся кликов
- * @param KICK_START - заданная конствнта максимального количества кликов
- */
-function countKickDown(){
-    let startCount = KICK_START;
-    return function () {
-        startCount -= 1;
-        if (startCount <= 0) {
-            console.log()
-            return 0;
-        }
-        return startCount;
     }
 }
 
@@ -85,14 +71,14 @@ $btn.addEventListener('click', function () {
 })
 
 
-const kick_bonus = countKickDown();
+const kick_bonus = countKickUp();
 
 $btn_bonus.addEventListener('click', function () {
     const count_bonus_kick = kick_bonus();
-    if (count_bonus_kick <= 0){
+    if ((KICK_START - count_bonus_kick) <= 0){
         $btn_bonus.disabled = true;
     }
-    document.querySelector('#btn-bonus-kick').innerText = `Bonus kick! ${count_bonus_kick} из ${KICK_START}`;
+    document.querySelector('#btn-bonus-kick').innerText = `Bonus kick! ${KICK_START - count_bonus_kick} из ${KICK_START}`;
     character.changeHP(random(damage.high));
     enemy.changeHP(random(damage.high));
 })
@@ -154,8 +140,9 @@ function changeHP(count) {
 
     if (this.damageHP <= 0) {
         $btn.disabled = true;
-        alert(`${this.name} - Game over!`)
+        $btn_bonus.disabled = true;
         this.damageHP = 0;
+        alert(`${this.name} - Game over!`)
     }
     this.renderHP();
 }
