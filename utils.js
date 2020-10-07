@@ -21,33 +21,43 @@ export const damage = {
     normal: [0, 10],
     middle: [5, 20],
     high: [20, 50],
-};
+}
 
 
 /**
- * @function countKickUp функция-счетчик
+ * @function countBtn функция-счетчик
+ * @param count количество нажатий на кнопку
+ * @param el элемент DOM
  */
-export function countBtn(count = 6, el) {
+export function countBtn(countKick = 6, el) {
     const innerText = el.innerText;
-    el.innerText = `${innerText} (${count})`
+    el.innerText = `${innerText} (${countKick})`
     return function () {
-        count--;
-        if (count === 0) {
+        countKick--;
+        if (countKick === 0)
             el.disabled = true;
-        }
-        el.innerText = `${innerText} (${count})`
-        return count;
+        el.innerText = `${innerText} (${countKick})`;
+        return countKick;
     }
 }
 
 /**
  * @param randomKick - Используя объект damage и функцию random, получаем рандомно тип удара и его диапазон
  */
- export function randomKick(obj) {
+export function randomKick(obj) {
     const [...argKeyDam] = Object.keys(obj);
     const kick = argKeyDam[random([0, argKeyDam.length])];
     return kick;
 }
+
+export function outputLog(log) {
+    const $battle_log = document.querySelector('#logBatle')
+    const $p = document.createElement('p');
+
+    $p.innerHTML = `${log}`;
+    $battle_log.insertBefore($p, $battle_log.children[0]);
+}
+
 
 export function generateLog(firstPerson, secondPerson, count) {
     const logs = [
@@ -63,8 +73,4 @@ export function generateLog(firstPerson, secondPerson, count) {
         `<span class="colortextFirstPerson">${firstPerson.name} </span> пытался что-то сказать, но вдруг, неожиданно <span class="colortextSecondPerson"> ${secondPerson.name} </span>  со скуки, разбил бровь сопернику. - ${count}. Осталось ${firstPerson.damageHP}`
     ];
     return logs[random([0, logs.length - 1])]
-    // return logs[random([0, 1])]
 }
-
-
-// export function random();
