@@ -2,30 +2,33 @@ import Pokemon from "./pokemon.js";
 import {random, countBtn, generateLog, outputLog} from "./utils.js";
 import {pokemons} from "./pokemons.js";
 // import {renderHP, renderHPLife, renderProgressHP} from "./render.js"
+//получаем индекс первого персонажа
 const rnd1 = random([0, pokemons.length])
+//получаем индекс второго персонажа
 const rnd2 = random([0, pokemons.length])
+
 
 const play1 = pokemons.find(item => item.name === pokemons[rnd1].name);
 console.log(play1);
 
 const play2 = pokemons.find(item => item.name === pokemons[rnd2].name);
-console.log(play2);
-
 const player1 = new Pokemon({
     ...play1,
     selectors: "player1",
 });
 
-const $elImg = document.getElementById(`img-${player1.selectors}`);
-$elImg.src = `${play1.img}`;
+console.log(player1);
+
+const $elImg1 = document.getElementById(`img-${player1.selectors}`);
+$elImg1.src = `${play1.img}`;
 
 const player2 = new Pokemon({
     ...play2,
     selectors: "player2",
 });
 
-const $elImg = document.getElementById(`img-${player2.selectors}`);
-$elImg.src = `${play2.img}`;
+const $elImg2 = document.getElementById(`img-${player2.selectors}`);
+$elImg2.src = `${play2.img}`;
 
 const $control = document.querySelector('.control');
 
@@ -43,7 +46,7 @@ player1.attacks.forEach(item => {
         });
         btnCount();
     })
-
+    // Кнопки добавляются из БД первого игрока
     $control.appendChild($btn);
 });
 player2.attacks.forEach(item => {
@@ -60,8 +63,16 @@ player2.attacks.forEach(item => {
         });
         btnCount();
     })
-    $control.appendChild($btn);
 });
+// $control.appendChild($btn);
+
+
+const $renderName1 = document.getElementById('name-player1');
+$renderName1 .innerText = `${player1.name}`;
+
+const $renderName2 = document.getElementById('name-player2');
+$renderName2 .innerText = `${player2.name}`;
+
 
 // const thunder_jolt_kick = countBtn(6, $btn);
 // $btn.addEventListener('click', function () {

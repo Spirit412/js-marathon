@@ -28,10 +28,10 @@ export default class Pokemon {
         if (damage === undefined)
             damage = 0;
         this.hp.current -= damage;
-
         if (this.hp.current <= 0) {
-            $btn.disabled = true;
-            $$btn_bonus.disabled = true;
+            // при 0 жизней у игрока, проходимся по кнопкам и отключаем их
+            let btn = document.querySelectorAll('.button');
+            btn.forEach($item => $item.disabled = true);
             this.hp.current = 0;
             alert(`${this.name} - Game over!`);
         }
