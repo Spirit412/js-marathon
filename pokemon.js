@@ -1,15 +1,18 @@
 import {generateLog} from "./utils.js";
 
 export default class Pokemon {
-    constructor(props) {
-        this.name = props.name;
-        this.selectors = props.selectors;
-        this.defaultHP = props.defaultHP;
-        this.damageHP = this.defaultHP;
-        this.type = props.type;
+    constructor({ name, hp, type, selectors, attacks=[]}) {
+        this.name = name;
+        this.selectors = selectors;
+        this.hp = {
+            current: hp,
+            total: hp,
+        };
+        this.type = type;
         this.elHP = this.$getElById(`health-${this.selectors}`);
         this.elProgressBar = this.$getElById(`progressbar-${this.selectors}`);
         this.changeHP();
+        this.attacks = attacks;
     }
 
     $getElById(id) {
@@ -24,15 +27,12 @@ export default class Pokemon {
     changeHP = (damage, cb) => {
         if (damage === undefined)
             damage = 0;
-        this.damageHP -= damage;
-        console.log(damage)
+        this.hp.current -= damage;
 
-        console.log(this.damageHP);
-        if (this.damageHP <= 0) {
-            console.log(this)
+        if (this.hp.current <= 0) {
             $btn.disabled = true;
             $$btn_bonus.disabled = true;
-            this.damageHP = 0;
+            this.hp.current = 0;
             alert(`${this.name} - Game over!`);
         }
 
@@ -46,18 +46,18 @@ export default class Pokemon {
     }
 
     renderHPLife = () => {
-        const {elHP, damageHP, defaultHP} = this;
-        elHP.innerText = damageHP + ' / ' + defaultHP;
+        const {elHP, hp: { current, total }} = this;
+        elHP.innerText = `${current} / ${total}`;
     }
 
     renderProgressHP = () => {
-        const {damageHP, defaultHP, elProgressBar} = this;
-        const progressHP = damageHP / (defaultHP/100);
+        const {hp: { current, total }, elProgressBar} = this;
+        const progressHP = current / (total/100);
         if (progressHP < 25) {
             elProgressBar.style.background = '#d20000'
-            elProgressBar.style.width = progressHP + '%'
+            elProgressBar.style.width = `${progressHP}%`
         } else {
-            elProgressBar.style.width = progressHP + '%'
+            elProgressBar.style.width = `${progressHP}%`
         }
     }
 

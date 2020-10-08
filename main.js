@@ -1,51 +1,40 @@
 import Pokemon from "./pokemon.js";
 import {random, damage, countBtn, generateLog, randomKick, outputLog} from "./utils.js";
+import {pokemons} from "./pokemons.js";
 // import {renderHP, renderHPLife, renderProgressHP} from "./render.js"
+
+
+const pikachu = pokemons.find(item => item.name === 'Pikachu');
+console.log(pikachu);
+
 
 const $btn = document.getElementById('btn-kick');
 const $btn_bonus = document.getElementById('btn-bonus-kick');
 
 
-const Player1 = new Pokemon ({
-    name: 'Picachu',
-    selectors: "character",
-    type: 'electric',
-    defaultHP: 230,
+const player1 = new Pokemon ({
+    ...pikachu,
+    selectors: "player1",
 });
 
 
-const Player2 = new Pokemon ({
-    name: 'Charmander',
-    type: 'fire',
-    selectors: 'enemy',
-    defaultHP: 160,
+const player2 = new Pokemon ({
+    ...pikachu,
+    selectors: "player2",
 });
 
-function init() {
-    random(damage[randomKick(damage)]);
-}
+const $control = document.querySelector('.control');
 
-const thunder_jolt_kick = countBtn(6, $btn);
-$btn.addEventListener('click', function () {
-    thunder_jolt_kick();
-    Player1.changeHP(random(damage[randomKick(damage)]), function (count) {
-        outputLog(generateLog(Player1, Player2, count));
-    });
-    Player2.changeHP(random(damage[randomKick(damage)]), function (count) {
-        outputLog(generateLog(Player2, Player1, count));
-    });
-});
+player1.attacks.forEach( item => {
+    console.log(item);
+    const $btn = document.createElement('button');
+    $btn.classList.add('button');
+    $btn.innerText = item.name;
+    const btnCount = countBtn(item.maxCount, $btn)
+    $btn.addEventListener('click', () =>{
+        console.log('Click button', $btn.innerText);
+        btnCount();
+    } )
+    $control.appendChild($btn);
+} );
 
-
-const bonus_kick = countBtn(2, $btn_bonus);
-$btn_bonus.addEventListener('click', function () {
-    bonus_kick();
-    Player1.changeHP(random(damage.high), function (count) {
-        outputLog(generateLog(Player1, Player2, count));
-    });
-    Player2.changeHP(random(damage.high), function (count) {
-        outputLog(generateLog(Player2, Player1, count));
-    });
-});
-
-init();
