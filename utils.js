@@ -14,14 +14,7 @@ export function random(minmax) {
     return result;
 }
 
-/**
- * @param {damage} разный диапазон повреждения
- */
-export const damage = {
-    normal: [0, 10],
-    middle: [5, 20],
-    high: [20, 50],
-}
+
 
 
 /**
