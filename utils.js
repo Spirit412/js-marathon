@@ -19,7 +19,7 @@ export function random(minmax) {
 
 /**
  * @function countBtn функция-счетчик
- * @param count количество нажатий на кнопку
+ * @param countKick количество нажатий на кнопку
  * @param el элемент DOM
  */
 export function countBtn(countKick = 6, el) {

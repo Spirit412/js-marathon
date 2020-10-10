@@ -3,10 +3,9 @@ import {random, countBtn, generateLog, outputLog} from "./utils.js";
 import {pokemons} from "./pokemons.js";
 // import {renderHP, renderHPLife, renderProgressHP} from "./render.js"
 //получаем индекс первого персонажа
-const rnd1 = random([0, pokemons.length])
+const rnd1 = random([0, pokemons.length -1])
 //получаем индекс второго персонажа
-const rnd2 = random([0, pokemons.length])
-
+const rnd2 = random([0, pokemons.length -1 ])
 
 const play1 = pokemons.find(item => item.name === pokemons[rnd1].name);
 console.log(play1);
@@ -17,30 +16,37 @@ const player1 = new Pokemon({
     selectors: "player1",
 });
 
-console.log(player1);
-
-const $elImg1 = document.getElementById(`img-${player1.selectors}`);
-$elImg1.src = `${play1.img}`;
-
 const player2 = new Pokemon({
     ...play2,
     selectors: "player2",
 });
 
+const $elImg1 = document.getElementById(`img-${player1.selectors}`);
+$elImg1.src = `${play1.img}`;
+
+
 const $elImg2 = document.getElementById(`img-${player2.selectors}`);
 $elImg2.src = `${play2.img}`;
+
+const $renderName1 = document.getElementById('name-player1');
+$renderName1 .innerText = `${player1.name}`;
+
+const $renderName2 = document.getElementById('name-player2');
+$renderName2 .innerText = `${player2.name}`;
+
+
 
 const $control = document.querySelector('.control');
 
 player1.attacks.forEach(item => {
-    const $btn = document.createElement('button');
+    let $btn = document.createElement('button');
     $btn.classList.add('button');
     $btn.innerText = item.name;
     const btnCount = countBtn(item.maxCount, $btn)
     $btn.addEventListener('click', () => {
-        player1.changeHP(random([item.minDamage, item.maxDamage]), function (count) {
-            outputLog(generateLog(player1, player2, count));
-        });
+        // player1.changeHP(random([item.minDamage, item.maxDamage]), function (count) {
+        //     outputLog(generateLog(player1, player2, count));
+        // });
         player2.changeHP(random([item.minDamage, item.maxDamage]), function (count) {
             outputLog(generateLog(player2, player1, count));
         });
@@ -50,7 +56,7 @@ player1.attacks.forEach(item => {
     $control.appendChild($btn);
 });
 player2.attacks.forEach(item => {
-    const $btn = document.createElement('button');
+    let $btn = document.createElement('button');
     $btn.classList.add('button');
     $btn.innerText = item.name;
     const btnCount = countBtn(item.maxCount, $btn)
@@ -58,20 +64,16 @@ player2.attacks.forEach(item => {
         player1.changeHP(random([item.minDamage, item.maxDamage]), function (count) {
             outputLog(generateLog(player1, player2, count));
         });
-        player2.changeHP(random([item.minDamage, item.maxDamage]), function (count) {
-            outputLog(generateLog(player2, player1, count));
-        });
+        // player2.changeHP(random([item.minDamage, item.maxDamage]), function (count) {
+        //     outputLog(generateLog(player2, player1, count));
+        // });
         btnCount();
     })
+    $control.appendChild($btn);
 });
-// $control.appendChild($btn);
 
 
-const $renderName1 = document.getElementById('name-player1');
-$renderName1 .innerText = `${player1.name}`;
 
-const $renderName2 = document.getElementById('name-player2');
-$renderName2 .innerText = `${player2.name}`;
 
 
 // const thunder_jolt_kick = countBtn(6, $btn);
